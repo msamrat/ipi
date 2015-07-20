@@ -1,0 +1,19 @@
+var data = [
+{
+    "countryname":"New Zealand",
+    "countrycode":"NZL",
+    "region":"APAC",
+    "income_class":"High income",
+    "income_class_shortcode":"h",
+    "IPI":47.69,
+    "Judicial Independence":10,
+    "Administrative Simplicity":10,
+    "Trade Openness":8.83,
+    "Budget Transparency":10,
+    "E-Transparency":1,
+    "Digital Citizens":8.86,
+    "flag_image": "" 
+  }
+    
+ 
+]

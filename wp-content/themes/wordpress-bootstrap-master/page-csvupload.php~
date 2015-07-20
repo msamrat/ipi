@@ -1,0 +1,94 @@
+<?php
+/*
+Template Name: csvimport
+*/
+if($_SERVER['REQUEST_METHOD'] == "POST") {
+
+    $fileName = date("d-m-y") . '-bv-directory.csv';
+    $content = ""; // content added below
+
+    // Title of the CSV
+    $content = "ID,Country Name,Country Code,Region,Icome class,Judicial Independence,Administrative Simplicity,Trade Openness,Budget Transparency,E_transparency,Digital Citizens \n";
+
+global $post;
+$args = array(     'numberposts' => -1,    'orderby' => 'post_title',    'order' => 'DESC',    'post_type' => 'country',    'post_status' => 'publish');
+$myposts = get_posts( $args );
+foreach( $myposts as $post ) : setup_postdata($post); 
+		 
+		 $country_name 		= get_the_title();
+    		 $country_code 		= get_post_meta($post->ID,'countrycode',true);
+		 $region 		= get_post_meta($post->ID,'region',true);
+		 $income_class 		= get_post_meta($post->ID,'income_class',true);
+		 $income_class_shortcode = get_post_meta($post->ID,'income_class_shortcode',true);
+		 $ji_score 		= get_post_meta($post->ID,'judicial_independence',true);		
+		 $as_score 		= get_post_meta($post->ID,'administrative_simplicity',true);		
+		 $to_score 		= get_post_meta($post->ID,'trade_openness',true);		
+		 $bt_score 		= get_post_meta($post->ID,'budget_transparency',true);		
+		 $et_score 		= get_post_meta($post->ID,'e_transparency',true);		
+		 $dc_score 		= get_post_meta($post->ID,'digital_citizens',true);
+		
+		 $ipi_score = $ji_score + $as_score + $to_score + $bt_score + $et_score + $dc_score;
+		 $image = wp_get_attachment_image_src(get_field('flag_image'), 'full'); 
+		 $flag = $image[0];
+     
+    // $content .= $post->ID.",".$country_name.",".$country_code.",".$region.",".$income_class.",".$ji_score.",".$ji_score.",".$as_score.",".$to_score.",".$bt_score .",".$et_score.",".$dc_score."\r\n";
+ $content .= $post->ID.",".$country_name.",".$country_code.",".$region.",".$income_class.",".$ji_score.",".$as_score.",".$to_score.",".$bt_score.",".$et_score.",".$dc_score."\t";
+//$content .= $bt_score .",".$et_score.",".$dc_score."\r\n";
+ endforeach;
+    // Data in the CSV
+    //$content .= "\"John Doe\",\"New York, USA\",15,65465464 \n";
+
+    // Create csv and force download
+    header('Content-Type: application/xls'); 
+   // header("Content-length: " . filesize($NewFile)); 
+    header('Content-Disposition: attachment; filename="' . $fileName . '"'); 
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    echo $content;
+
+    exit;
+}
+?>
+
+<?php get_header(); ?>
+			
+			<div id="content" class="clearfix row">
+			
+				<div id="main" class="col-sm-12 clearfix" role="main">
+
+					
+					
+									
+						<section class="row post_content">
+						
+							<div class="col-sm-12">
+						     
+	<div class="heading"><strong>Based on 2014 data	<form action="" method="post">
+	     <input name="btnSubmit" value="Submit" style="float: right;margin-top: -12px;" type="image" src="<?php bloginfo('stylesheet_directory'); ?>/img/cont/Blackdown.png" width="25px" height="25px" alt="Download csv" />
+            <input type="hidden" name="submit" />
+            </form></strong></div>
+            
+            
+
+							</div>
+							
+							<?php// get_sidebar('sidebar2'); // sidebar 2 ?>
+													
+						</section> <!-- end article header -->
+						
+						<footer>
+			
+							<p class="clearfix"><?php the_tags('<span class="tags">' . __("Tags","wpbootstrap") . ': ', ', ', '</span>'); ?></p>
+							
+						</footer> <!-- end article footer -->
+					
+					
+					
+			
+				</div> <!-- end #main -->
+    
+				<?php //get_sidebar(); // sidebar 1 ?>
+    
+			</div> <!-- end #content -->
+
+<?php get_footer(); ?>
